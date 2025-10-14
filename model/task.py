@@ -5,8 +5,7 @@ class Task:
         self.title = title
     
     def __str__(self):
-        status = "✓" if self.done else "○"
-        return f"{status} [{self.id}] {self.title}"
+        return f"[{self.id}] {self.title}"
 
 
 class TaskManager:
@@ -19,6 +18,13 @@ class TaskManager:
         self.tasks.append(task)
         self.next_id += 1
         return task
+    
+    def delete(self, task_id):
+        for i, task in enumerate(self.tasks):
+            if task.id == task_id:
+                self.tasks.pop(i)
+                return True
+        return False
     
     def get_all(self):
         return self.tasks
