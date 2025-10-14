@@ -1,18 +1,10 @@
-# ============================================
-# POINT D'ENTRÉE
-# ============================================
-
-# Importer les classes depuis les autres modules
+"le point d'entrée"
 from model.task import TaskManager
-from views.cli import TaskView
-from controllers.task_controller import TaskController
-
+from views.cli import View
+from controllers.task_controller import Controller
 
 if __name__ == "__main__":
-    # Initialiser l'application
-    manager = TaskManager("tasks.json")
-    view = TaskView()
-    controller = TaskController(manager, view)
-    
-    # Démarrer
+    manager = TaskManager()
+    view = View()
+    controller = Controller(manager, view)
     controller.run()
