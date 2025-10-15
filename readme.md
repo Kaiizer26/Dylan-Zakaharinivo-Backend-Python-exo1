@@ -3,16 +3,17 @@
 Une petite appli de gestion de tâches en ligne de commande, simple et rapide à lancer.
 C’est un petit projet en architecture MVC (Model - View - Controller).
 
-## Structure 
+## Structure
 
+```
 ├── controllers
-| └── task_controller.py         
+│   └── task_controller.py
 ├── model
-| └── task.py           
+│   └── task.py
 ├── views
-|  └── cli.py    
-├ main.py 
-
+│   └── cli.py
+├── main.py
+```
 
 ## ⚙️ Installation
 
