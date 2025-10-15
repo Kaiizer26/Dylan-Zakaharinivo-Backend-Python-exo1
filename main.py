@@ -1,10 +1,12 @@
-"le point d'entrée"
-from model.task import TaskManager
-from views.cli import View
-from controllers.task_controller import Controller
+from flask import Flask
+from controllers.task_controller import task_routes
 
+# création de l'appli flask
+app = Flask(__name__)
+
+# enregistrement du blueprint contenant les routes
+app.register_blueprint(task_routes)
+
+# point d'entrée 
 if __name__ == "__main__":
-    manager = TaskManager()
-    view = View()
-    controller = Controller(manager, view)
-    controller.run()
+    app.run(debug=True)

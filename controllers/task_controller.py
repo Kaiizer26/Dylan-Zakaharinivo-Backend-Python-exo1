@@ -1,39 +1,36 @@
-""" Logique système"""
-class Controller:
-    def __init__(self, manager, view):
-        self.manager = manager
-        self.view = view
-    
-    def run(self):
-        while True:
-            self.view.show_menu()
-            choice = self.view.get_input("Choix")
-            
-            if choice == "1":
-                self.add_task()
-            elif choice == "2":
-                self.show_all()
-            elif choice == "3":
-                self.delete_task()
-            elif choice == "4":
-                print("Au revoir!")
-                break
-            else:
-                self.view.show_message("Choix invalide")
-    
-    def add_task(self):
-        title = self.view.get_input("Titre de la tache")
-        self.manager.add(title)
-        self.view.show_message("Tache ajoutee")
-    
-    def show_all(self):
-        tasks = self.manager.get_all()
-        self.view.show_tasks(tasks)
-    
-    def delete_task(self):
-        self.show_all()
-        task_id = int(self.view.get_input("ID a supprimer"))
-        if self.manager.delete(task_id):
-            self.view.show_message("Tache supprimee")
-        else:
-            self.view.show_message("Tache non trouvee")
+from flask import Blueprint, jsonify, request
+from model.task import TaskManager
+
+# on crée une instance de TaskManager pour gérer les tâches
+task_manager = TaskManager()
+
+# blueprint (sépare les routes du reste du code)
+task_routes = Blueprint("task_routes", __name__)
+
+# récupérer toutes les tâches
+@task_routes.route("/tasks", methods=["GET"])
+def get_tasks():
+    tasks = [t.to_dict() for t in task_manager.get_all()]
+    return jsonify(tasks), 200
+
+
+# ajouter une tâche
+@task_routes.route("/tasks", methods=["POST"])
+def add_task():
+    data = request.get_json()
+
+    if not data or not data.get("title"):
+        return jsonify({"error": "Title is required"}), 400
+
+    title = data["title"]
+    task = task_manager.add(title)
+    return jsonify(task.to_dict()), 201
+
+
+# supprimer une tâche
+@task_routes.route("/tasks/<int:task_id>", methods=["DELETE"])
+def delete_task(task_id):
+    if task_manager.delete(task_id):
+        return jsonify({"message": "Task deleted"}), 200
+    else:
+        return jsonify({"error": "Task not found"}), 404
