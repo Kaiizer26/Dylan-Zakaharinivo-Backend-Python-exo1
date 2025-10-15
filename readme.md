@@ -40,3 +40,13 @@ View → Affiche les menus et les messages
 Controller → Gère les actions utilisateur
 
 Main → Démarre l’application
+
+## Création d'un environnement virtuel
+
+Pour créer un environnement virtuel, faites ces lignes de commandes : 
+```
+python3 -m venv venv
+```
+```
+source venv/Scripts/activate
+```
